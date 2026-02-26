@@ -14,13 +14,22 @@ export function useScrollAnimation(ref) {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Stagger by index if multiple siblings
-            const siblings = Array.from(entry.target.parentElement?.children || [entry.target])
-            const idx = siblings.indexOf(entry.target)
-            setTimeout(() => {
-              entry.target.classList.add('anim-in')
-            }, idx * 80)
-            observer.unobserve(entry.target)
+            const el = entry.target
+            
+            // Basic animation class
+            el.classList.add('anim-in')
+
+            // Sequential word reveal for titles
+            const spans = el.querySelectorAll('.section-span')
+            if (spans.length) {
+              spans.forEach((span, i) => {
+                setTimeout(() => {
+                  span.classList.add('lit')
+                }, i * 100) // Stagger words by 100ms
+              })
+            }
+
+            observer.unobserve(el)
           }
         })
       },

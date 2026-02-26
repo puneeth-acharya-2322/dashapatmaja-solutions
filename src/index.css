@@ -39,8 +39,13 @@ html.lenis {
 
 /* Partner logo marquee animation */
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .partner-logo-block .partner-loop {
@@ -58,15 +63,35 @@ html.lenis {
   opacity: 0.3;
   transition: opacity 0.4s ease;
 }
+
 .section-span.lit {
   opacity: 1;
 }
 
 /* Counter animation */
-.count-num, .review-num {
+.count-num,
+.review-num {
   overflow: hidden;
   display: flex;
   align-items: center;
+}
+
+.mechanical-counter {
+  display: flex;
+  overflow: hidden;
+  height: 1.2em;
+  line-height: 1.2em;
+}
+
+.counter-column {
+  display: flex;
+  flex-direction: column;
+  transition: transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.counter-column span {
+  display: block;
+  text-align: center;
 }
 
 /* Ensure videos cover their containers */

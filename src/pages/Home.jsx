@@ -5,6 +5,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Button from '../components/Button'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import { REVIEW_LOGOS } from '../assets/Logos'
 
 const ARROW_ICON = (
     <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 25 25" fill="none" className="button-icon">
@@ -87,35 +88,35 @@ const SOLUTIONS = [
 
 const REVIEWS = [
     {
-        id: 1, rating: '(4.9)', logo: 'Tab 1',
+        id: 1, rating: '(4.9)', logo: 0,
         quote: "I've worked with MNC. for over 5 years now. I'm continually impressed with how seamless our development is and highly recommend connecting with him if you're looking for a new development team",
         author: 'Sophie Gray', role: 'CEO, Logoipsum',
         img: 'https://cdn.prod.website-files.com/69368a5646568096095bb918/693ba2c2a41df584fdc170ca_Sophie%20Gray.avif',
         funding: '$1.2M+', years: '5+', service: 'Tech Solution',
     },
     {
-        id: 2, rating: '(4.9)', logo: 'Tab 2',
+        id: 2, rating: '(4.9)', logo: 1,
         quote: "I've worked with MNC for over five years, and the experience has been outstanding. The development process is always smooth and reliable. I highly recommend connecting with him if you're looking for a trusted team.",
         author: 'Jason Miller', role: 'COO, Logoipsum',
         img: 'https://cdn.prod.website-files.com/69368a5646568096095bb918/693beb5faa17242002d60d64_Jason%20Miller.avif',
         funding: '$1.2M+', years: '5+', service: 'Renewable Energy',
     },
     {
-        id: 3, rating: '(4.9)', logo: 'Tab 3',
+        id: 3, rating: '(4.9)', logo: 2,
         quote: "Partnering with MNC has been one of the best decisions for our company. Their workflow is seamless, communication is clear, and delivery is always on point. Anyone needing a strong development partner should reach out.",
         author: 'Emily Carter', role: 'Operations Director, Logoipsum',
         img: 'https://cdn.prod.website-files.com/69368a5646568096095bb918/693bebcba07ca7364b2645f8_Emily%20Carter.avif',
         funding: '$1.2M+', years: '5+', service: 'Finance & Investment',
     },
     {
-        id: 4, rating: '(4.9)', logo: 'Tab 4',
+        id: 4, rating: '(4.9)', logo: 3,
         quote: "We've collaborated with MNC across multiple projects, and every time they've delivered beyond expectations. Truly professional, efficient, and detail-oriented. I'd absolutely recommend him for any development needs.",
         author: 'Michael Anderson', role: 'Senior UX Strategist, Logoipsum',
         img: 'https://cdn.prod.website-files.com/69368a5646568096095bb918/693bebffc84f308b2c8b6cb6_Michael%20Anderson.avif',
         funding: '$1.2M+', years: '5+', service: 'Healthcare',
     },
     {
-        id: 5, rating: '(4.9)', logo: 'Tab 5',
+        id: 5, rating: '(4.9)', logo: 4,
         quote: "MNC has consistently made our development smooth and stress-free. Their ability to understand requirements and execute perfectly is remarkable. If you need a dependable dev team, he's the one to talk to.",
         author: 'Olivia Thompson', role: 'Marketing Lead, Logoipsum',
         img: 'https://cdn.prod.website-files.com/69368a5646568096095bb918/693bec792ec7cee2e00ae526_Olivia%20Thompson.avif',
@@ -149,6 +150,37 @@ const BLOG_POSTS = [
         readTime: '6 Min Read',
     },
 ]
+
+const MechanicalCounter = ({ value }) => {
+    const [isLit, setIsLit] = useState(false)
+    const ref = useRef(null)
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+                setIsLit(true)
+                observer.unobserve(entry.target)
+            }
+        }, { threshold: 0.5 })
+        if (ref.current) observer.observe(ref.current)
+        return () => observer.disconnect()
+    }, [])
+
+    const digits = value.split('')
+    return (
+        <div className="mechanical-counter" ref={ref}>
+            {digits.map((d, i) => {
+                const isNum = /\d/.test(d)
+                if (!isNum) return <span key={i}>{d}</span>
+                return (
+                    <div key={i} className="counter-column" style={{ transform: isLit ? `translateY(-${parseInt(d) * (100 / 10)}%)` : 'translateY(0%)' }}>
+                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => <span key={n}>{n}</span>)}
+                    </div>
+                )
+            })}
+        </div>
+    )
+}
 
 const CHECKBOX_ICON = 'https://cdn.prod.website-files.com/69368a5646568096095bb918/694a82d4720fc5483140a9c2_Checkbox.avif'
 const RATING_ICON = 'https://cdn.prod.website-files.com/69368a5646568096095bb918/693b9c472ae8a050a77e315a_4.2.svg'
@@ -207,7 +239,15 @@ export default function Home() {
                                         </div>
                                     </div>
                                     <div className="home-title-block">
-                                        <h1 className="home-title">Building Global Solutions for a Changing World</h1>
+                                        <h1 className="home-title">
+                                            Building{' '}
+                                            <span className="section-span _01">Global</span>{' '}
+                                            <span className="section-span">Solutions</span>{' '}
+                                            <span className="section-span _02">for</span>{' '}
+                                            <span className="section-span _03">a</span>{' '}
+                                            <span className="section-span _04">Changing</span>{' '}
+                                            <span className="section-span _05">World</span>
+                                        </h1>
                                     </div>
                                     <div className="home-except-block">
                                         <div data-scroll-anim className="home-except">
@@ -268,7 +308,9 @@ export default function Home() {
                                         ].map((s, i) => (
                                             <div key={i} data-scroll-anim className="count-wrap">
                                                 <div className="count-num">
-                                                    <div className="count-title">{s.val}</div>
+                                                    <div className="count-title">
+                                                        <MechanicalCounter value={s.val} />
+                                                    </div>
                                                 </div>
                                                 <div className="count-text">{s.label}</div>
                                             </div>
@@ -326,39 +368,36 @@ export default function Home() {
                                 </div>
                                 <div className="offer-card-block">
                                     {SOLUTIONS.map((s, idx) => (
-                                        <div key={s.slug}>
-                                            <div data-scroll-anim className={`offer-list-wrapper _0${idx + 1} w-dyn-list`}>
-                                                <div role="list" className="offer-list w-dyn-items">
-                                                    <div role="listitem" className="offer-item w-dyn-item">
-                                                        <div className={`offer-card${s.white ? ' white' : ''}`}>
-                                                            <div className="offer-details">
-                                                                <div className="offer-num">{s.num}</div>
-                                                                <h3 className="offer-name">{s.name}</h3>
-                                                                <div className="offer-except">{s.desc}</div>
-                                                                <div className="offer-button">
-                                                                    <Button to={`/solution/${s.slug}`} variant="offer">Learn More</Button>
-                                                                </div>
+                                        <div key={s.slug} className={`offer-list-wrapper _0${idx + 1} w-dyn-list`}>
+                                            <div role="list" className="offer-list w-dyn-items">
+                                                <div role="listitem" className="offer-item w-dyn-item">
+                                                    <div className={`offer-card${s.white ? ' white' : ''}`}>
+                                                        <div className="offer-details">
+                                                            <div className="offer-num">{s.num}</div>
+                                                            <h3 className="offer-name">{s.name}</h3>
+                                                            <div className="offer-except">{s.desc}</div>
+                                                            <div className="offer-button">
+                                                                <Button to={`/solution/${s.slug}`} variant="offer">Learn More</Button>
                                                             </div>
-                                                            <div className="offer-images">
-                                                                <img src={s.img} loading="eager" alt={s.name} className="offer-image" />
-                                                                <div className="offer-overlay"></div>
-                                                                <div className="offer-wrapper">
-                                                                    {s.points.map((p, pi) => (
-                                                                        <div key={pi} className="offer-point">
-                                                                            <img src={CHECKBOX_ICON} loading="lazy" alt="Checkbox" className="offer-icon" />
-                                                                            <div className="offer-wrap">
-                                                                                <div className="offer-title">{p.title}</div>
-                                                                                <div className="offer-info">{p.info}</div>
-                                                                            </div>
+                                                        </div>
+                                                        <div className="offer-images">
+                                                            <img src={s.img} loading="eager" alt={s.name} className="offer-image" />
+                                                            <div className="offer-overlay"></div>
+                                                            <div className="offer-wrapper">
+                                                                {s.points.map((p, pi) => (
+                                                                    <div key={pi} className="offer-point">
+                                                                        <img src={CHECKBOX_ICON} loading="lazy" alt="Checkbox" className="offer-icon" />
+                                                                        <div className="offer-wrap">
+                                                                            <div className="offer-title">{p.title}</div>
+                                                                            <div className="offer-info">{p.info}</div>
                                                                         </div>
-                                                                    ))}
-                                                                </div>
+                                                                    </div>
+                                                                ))}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            {idx < SOLUTIONS.length - 1 && <div className="offer-blank-space"></div>}
                                         </div>
                                     ))}
                                 </div>
@@ -491,7 +530,7 @@ export default function Home() {
                                                     className={`review-logo w-inline-block w-tab-link${activeTab === i ? ' w--current' : ''}`}
                                                     onClick={() => setActiveTab(i)}
                                                 >
-                                                    <span style={{ padding: '0 8px', fontSize: '12px', opacity: 0.7 }}>{r.logo}</span>
+                                                    {REVIEW_LOGOS[r.logo]}
                                                 </button>
                                             ))}
                                         </div>
